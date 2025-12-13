@@ -53,6 +53,9 @@ class ProfileSelectDialog(QtWidgets.QDialog, Ui_ProfileSelectDialog):
         if sys.platform.startswith("win"):
             appdata = os.path.expandvars("%APPDATA%")
             path = os.path.join(appdata, "GNS3", version)
+        elif os.path.expandvars("$XDG_CONFIG_HOME"):
+            xdg_config = os.path.expandvars("$XDG_CONFIG_HOME")
+            path = os.path.join(xdg_config, "GNS3", version)
         else:
             home = os.path.expanduser("~")
             path = os.path.join(home, ".config", "GNS3", version)
