@@ -188,8 +188,8 @@ def main():
     if sys.version_info < (3, 8):
         raise SystemExit("Python 3.8 or higher is required")
 
-    if parse_version(QtCore.QT_VERSION_STR) < parse_version("5.5.0"):
-        raise SystemExit("Requirement is PyQt5 version 5.5.0 or higher, got version {}".format(QtCore.QT_VERSION_STR))
+    if parse_version(QtCore.QT_VERSION_STR) < parse_version("6.3.1"):
+        raise SystemExit("Requirement is PyQt6 version 6.3.1 or higher, got version {}".format(QtCore.QT_VERSION_STR))
 
     if parse_version(psutil.__version__) < parse_version("2.2.1"):
         raise SystemExit("Requirement is psutil version 2.2.1 or higher, got version {}".format(psutil.__version__))

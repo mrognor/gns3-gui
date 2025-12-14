@@ -120,7 +120,7 @@ class ConsoleView(PyCutExt, ConsoleCmd):
         delete_all_action = QtGui.QAction("Delete All", menu)
         delete_all_action.triggered.connect(self._deleteAllActionSlot)
         menu.addAction(delete_all_action)
-        menu.exec(event.globalPos());
+        menu.exec(event.globalPos())
 
     def _deleteAllActionSlot(self):
         """

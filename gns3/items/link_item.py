@@ -102,7 +102,7 @@ class LinkItem(QtWidgets.QGraphicsPathItem):
             self._link = link
             self._link.updated_link_signal.connect(self._drawSymbol)
             self._link.delete_link_signal.connect(self._linkDeletedSlot)
-            self.setFlag(self.ItemIsFocusable)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
             source_item.addLink(self)
             destination_item.addLink(self)
             self.setCustomToolTip()

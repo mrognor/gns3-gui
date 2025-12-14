@@ -738,3 +738,4 @@ from ..nodes_dock_widget import NodesDockWidget
 from ..nodes_view import NodesView
 from ..status_bar import StatusBar
 from ..topology_summary_view import TopologySummaryView
+from . import resources_rc

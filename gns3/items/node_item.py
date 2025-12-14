@@ -60,7 +60,7 @@ class NodeItem(QtSvgWidgets.QGraphicsSvgItem):
         # node label
         self._node_label = None
 
-        self.setPos(QtCore.QPoint(self._node.x(), self._node.y()))
+        self.setPos(QtCore.QPointF(self._node.x(), self._node.y()))
 
         # Temporary symbol during loading
         renderer = QImageSvgRenderer(":/icons/reload.svg")
@@ -223,7 +223,7 @@ class NodeItem(QtSvgWidgets.QGraphicsSvgItem):
         :param base_node_id: base node identifier (integer)
         """
 
-        self.setPos(QtCore.QPoint(self._node.x(), self._node.y()))
+        self.setPos(QtCore.QPointF(self._node.x(), self._node.y()))
         self.setSymbol(self._node.symbol())
         self.update()
 
@@ -384,7 +384,7 @@ class NodeItem(QtSvgWidgets.QGraphicsSvgItem):
         self._node_label.setRotation(label_data.get("rotation", 0))
 
         if self._node.locked():
-            self._node_label.setFlag(self.ItemIsMovable, False)
+            self._node_label.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
 
         if label_data["x"] is None:
             self._centerLabel()
@@ -566,13 +566,13 @@ class NodeItem(QtSvgWidgets.QGraphicsSvgItem):
         """
 
         if locked is True:
-            self.setFlag(self.ItemIsMovable, False)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
             if self._node_label:
-                self._node_label.setFlag(self.ItemIsMovable, False)
+                self._node_label.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
         else:
-            self.setFlag(self.ItemIsMovable, True)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
             if self._node_label:
-                self._node_label.setFlag(self.ItemIsMovable, True)
+                self._node_label.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
         for link in self._links:
             link.adjust()
         self._locked = locked

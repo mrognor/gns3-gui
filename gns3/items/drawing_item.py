@@ -191,9 +191,9 @@ class DrawingItem:
         """
 
         if locked is True:
-            self.setFlag(self.ItemIsMovable, False)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
         else:
-            self.setFlag(self.ItemIsMovable, True)
+            self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
         self._locked = locked
 
     def deleting(self):

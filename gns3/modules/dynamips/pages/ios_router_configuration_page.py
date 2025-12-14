@@ -65,8 +65,8 @@ class IOSRouterConfigurationPage(QtWidgets.QWidget, Ui_iosRouterConfigPageWidget
         self.uiIOSImageToolButton.clicked.connect(self._iosImageBrowserSlot)
         self._compute_id = None
         self._idle_valid = False
-        idle_pc_rgx = QtCore.QRegExp("^(0x[0-9a-fA-F]{8})?$")
-        validator = QtGui.QRegExpValidator(idle_pc_rgx, self)
+        idle_pc_rgx = QtCore.QRegularExpression("^(0x[0-9a-fA-F]{8})?$")
+        validator = QtGui.QRegularExpressionValidator(idle_pc_rgx, self)
         self.uiIdlepcLineEdit.setValidator(validator)
         self.uiIdlepcLineEdit.textChanged.connect(self._idlePCValidateSlot)
         self.uiIdlepcLineEdit.textChanged.emit(self.uiIdlepcLineEdit.text())

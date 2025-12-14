@@ -401,7 +401,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
         # link addition code
         if not self._newlink:
             source_item = item
-            source_port = source_item.connectToPort(event.globalPos())
+            source_port = source_item.connectToPort(event.globalPosition())
             if not source_port:
                 return
 
@@ -410,15 +410,15 @@ class GraphicsView(QtWidgets.QGraphicsView):
                 return
 
             if source_port.linkType() == "Serial":
-                self._newlink = SerialLinkItem(source_item, source_port, self.mapToScene(event.pos()), None, adding_flag=True)
+                self._newlink = SerialLinkItem(source_item, source_port, self.mapToScene(event.position().toPoint()), None, adding_flag=True)
             else:
-                self._newlink = EthernetLinkItem(source_item, source_port, self.mapToScene(event.pos()), None, adding_flag=True)
+                self._newlink = EthernetLinkItem(source_item, source_port, self.mapToScene(event.position().toPoint()), None, adding_flag=True)
             self.scene().addItem(self._newlink)
         else:
             source_item = self._newlink.sourceItem()
             source_port = self._newlink.sourcePort()
             destination_item = item
-            destination_port = destination_item.connectToPort(event.globalPos())
+            destination_port = destination_item.connectToPort(event.globalPosition())
             if not destination_port:
                 return
 
@@ -441,7 +441,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
         is_not_link = True
         is_not_logo = True
 
-        item = self.itemAt(event.pos())
+        item = self.itemAt(event.position().toPoint())
         if item and sip.isdeleted(item):
             return
         elif not item:
@@ -459,7 +459,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
         if (event.buttons() == QtCore.Qt.MouseButton.LeftButton and event.modifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier) or event.buttons() == QtCore.Qt.MouseButton.MiddleButton:
             # checks to see if either the middle mouse is pressed
             # or a combination of left mouse button and SHIT key are pressed to start dragging the view
-            self._last_mouse_position = self.mapFromGlobal(event.globalPos())
+            self._last_mouse_position = self.mapFromGlobal(event.globalPosition())
             self._dragging = True
             self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
             return
@@ -481,7 +481,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
             #context_event = QtGui.QContextMenuEvent(QtGui.QContextMenuEvent.Reason.Mouse, event.pos())
             #QtWidgets.QApplication.sendEvent(self, context_event)
         elif event.button() == QtCore.Qt.MouseButton.LeftButton and self._adding_note:
-            pos = self.mapToScene(event.pos())
+            pos = self.mapToScene(event.position().toPoint())
             note = self.createDrawingItem("text", int(pos.x()), int(pos.y()), 2)
             pos_x = note.pos().x()
             pos_y = note.pos().y() - (note.boundingRect().height() / 2)
@@ -491,19 +491,19 @@ class GraphicsView(QtWidgets.QGraphicsView):
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
             self._adding_note = False
         elif event.button() == QtCore.Qt.MouseButton.LeftButton and self._adding_rectangle:
-            pos = self.mapToScene(event.pos())
+            pos = self.mapToScene(event.position().toPoint())
             self.createDrawingItem("rect", int(pos.x()), int(pos.y()), 1)
             self._main_window.uiDrawRectangleAction.setChecked(False)
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
             self._adding_rectangle = False
         elif event.button() == QtCore.Qt.MouseButton.LeftButton and self._adding_ellipse:
-            pos = self.mapToScene(event.pos())
+            pos = self.mapToScene(event.position().toPoint())
             self.createDrawingItem("ellipse", int(pos.x()), int(pos.y()), 1)
             self._main_window.uiDrawEllipseAction.setChecked(False)
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
             self._adding_ellipse = False
         elif event.button() == QtCore.Qt.MouseButton.LeftButton and self._adding_line:
-            pos = self.mapToScene(event.pos())
+            pos = self.mapToScene(event.position().toPoint())
             self.createDrawingItem("line", int(pos.x()), int(pos.y()), 1)
             self._main_window.uiDrawLineAction.setChecked(False)
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
@@ -570,7 +570,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
             self._dragging = False
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
         else:
-            item = self.itemAt(event.pos())
+            item = self.itemAt(event.position().toPoint())
             if item is not None and not event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
                 item.setSelected(True)
             super().mouseReleaseEvent(event)
@@ -632,7 +632,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
             # This if statement event checks to see if the user is dragging the scene
             # if so it sets the value of the scene scroll bars based on the change between
             # the previous and current mouse position
-            mapped_global_pos = self.mapFromGlobal(event.globalPos())
+            mapped_global_pos = self.mapFromGlobal(event.globalPosition())
             hBar = self.horizontalScrollBar()
             vBar = self.verticalScrollBar()
             delta = mapped_global_pos - self._last_mouse_position
@@ -641,10 +641,10 @@ class GraphicsView(QtWidgets.QGraphicsView):
             self._last_mouse_position = mapped_global_pos
         if self._adding_link and self._newlink and self._newlink in self.scene().items():
             # update the mouse position when the user is adding a link.
-            self._newlink.setMousePoint(self.mapToScene(event.pos()))
+            self._newlink.setMousePoint(self.mapToScene(event.position().toPoint()))
             event.ignore()
         else:
-            item = self.itemAt(event.pos())
+            item = self.itemAt(event.position().toPoint())
             if item:
                 # show item coords in the status bar
                 coords = "X: {} Y: {} Z: {}".format(item.x(), item.y(), item.zValue())
@@ -663,7 +663,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
         :param event: QMouseEvent instance
         """
 
-        item = self.itemAt(event.pos())
+        item = self.itemAt(event.position().toPoint())
 
         if not self._adding_link:
             if isinstance(item, NodeItem) and item.node().initialized():
@@ -727,19 +727,19 @@ class GraphicsView(QtWidgets.QGraphicsView):
             template_id = event.mimeData().data("application/x-gns3-template").data().decode()
             event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
-            if event.keyboardModifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier:
+            if event.modifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier:
                 max_nodes_per_line = 10  # max number of nodes on a single line
                 offset = 100  # spacing between elements
                 integer, ok = QtWidgets.QInputDialog.getInt(self, "Nodes", "Number of nodes:", 2, 1, 100, 1)
                 if ok:
                     for node_number in range(integer):
-                        x = event.pos().x() - (150 // 2) + (node_number % max_nodes_per_line) * offset
-                        y = event.pos().y() - (70 // 2) + (node_number // max_nodes_per_line) * offset
+                        x = event.position().x() - (150 // 2) + (node_number % max_nodes_per_line) * offset
+                        y = event.position().y() - (70 // 2) + (node_number // max_nodes_per_line) * offset
                         if self.createNodeFromTemplateId(template_id, QtCore.QPoint(x, y)) is False:
                             event.ignore()
                             break
             else:
-                if self.createNodeFromTemplateId(template_id, event.pos()) is False:
+                if self.createNodeFromTemplateId(template_id, event.position()) is False:
                     event.ignore()
         elif event.mimeData().hasFormat("text/uri-list") and event.mimeData().hasUrls():
             # This should not arrive but we received bug report with it...
@@ -1617,7 +1617,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
         """
         Ask the server to create a node using this template
         """
-        pos = self.mapToScene(pos)
+        pos = self.mapToScene(pos.toPoint())
         return TemplateManager().instance().createNodeFromTemplateId(self._topology.project(), template_id, pos.x(), pos.y())
 
     def createNodeItem(self, node, symbol, x, y):

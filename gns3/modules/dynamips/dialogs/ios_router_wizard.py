@@ -80,8 +80,8 @@ class IOSRouterWizard(VMWithImagesWizard, Ui_IOSRouterWizard):
         # True if we have create a temporary project for computing IDLE PC
         self._project_created = False
 
-        idle_pc_rgx = QtCore.QRegExp("^(0x[0-9a-fA-F]{8})?$")
-        validator = QtGui.QRegExpValidator(idle_pc_rgx, self)
+        idle_pc_rgx = QtCore.QRegularExpression("^(0x[0-9a-fA-F]{8})?$")
+        validator = QtGui.QRegularExpressionValidator(idle_pc_rgx, self)
         self.uiIdlepcLineEdit.setValidator(validator)
         self.uiIdlepcLineEdit.textChanged.connect(self._idlePCValidateSlot)
         self.uiIdlepcLineEdit.textChanged.emit(self.uiIdlepcLineEdit.text())
