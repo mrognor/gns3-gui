@@ -81,7 +81,7 @@ class ApplianceWizard(QtWidgets.QWizard, Ui_ApplianceWizard):
                 images_directories.append(emulator_images_dir)
 
         images_directories.append(os.path.dirname(self._path))
-        download_directory = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation)
+        download_directory = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DownloadLocation)
         if download_directory != "" and download_directory != os.path.dirname(self._path):
             images_directories.append(download_directory)
 
@@ -96,8 +96,8 @@ class ApplianceWizard(QtWidgets.QWizard, Ui_ApplianceWizard):
         # add a custom button to show appliance information
         if self._appliance["registry_version"] < 8:
             # FIXME: show appliance info for v8
-            self.setButtonText(QtWidgets.QWizard.CustomButton1, "&Appliance info")
-            self.setOption(QtWidgets.QWizard.HaveCustomButton1, True)
+            self.setButtonText(QtWidgets.QWizard.WizardButton.CustomButton1, "&Appliance info")
+            self.setOption(QtWidgets.QWizard.WizardOption.HaveCustomButton1, True)
             self.customButtonClicked.connect(self._showApplianceInfoSlot)
 
         # customize the server selection
@@ -141,7 +141,7 @@ class ApplianceWizard(QtWidgets.QWizard, Ui_ApplianceWizard):
             symbol = ":/symbols/computer.svg"
         else:
             symbol = ":/symbols/{}.svg".format(self._appliance["category"])
-        self.page(page_id).setPixmap(QtWidgets.QWizard.LogoPixmap, QtGui.QPixmap(symbol))
+        self.page(page_id).setPixmap(QtWidgets.QWizard.WizardPixmap.LogoPixmap, QtGui.QPixmap(symbol))
 
         if self.page(page_id) == self.uiServerWizardPage:
 
@@ -327,10 +327,10 @@ Usage: {}
         msgbox = QtWidgets.QMessageBox(self)
         msgbox.setWindowTitle("Appliance information")
         msgbox.setStyleSheet("QLabel{min-width: 600px;}") # TODO: resize details box QTextEdit{min-height: 500px;}
-        msgbox.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        msgbox.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         msgbox.setText(text_info)
         msgbox.setDetailedText(self._appliance["description"])
-        msgbox.exec_()
+        msgbox.exec()
 
     @qslot
     def _refreshVersions(self, *args):
@@ -377,9 +377,9 @@ Usage: {}
                     image_widget.setToolTip(2, image["path"])
 
                 # Associated data stored are col 0: version, col 1: image
-                image_widget.setData(0, QtCore.Qt.UserRole, version)
-                image_widget.setData(1, QtCore.Qt.UserRole, image)
-                image_widget.setData(2, QtCore.Qt.UserRole, self._appliance)
+                image_widget.setData(0, QtCore.Qt.ItemDataRole.UserRole, version)
+                image_widget.setData(1, QtCore.Qt.ItemDataRole.UserRole, image)
+                image_widget.setData(2, QtCore.Qt.ItemDataRole.UserRole, self._appliance)
                 top.addChild(image_widget)
 
             font = top.font(0)
@@ -393,10 +393,10 @@ Usage: {}
                 expand = False
                 top.setForeground(2, QtGui.QBrush(QtGui.QColor("green")))
 
-            top.setData(1, QtCore.Qt.DisplayRole, human_filesize(size))
-            top.setData(2, QtCore.Qt.DisplayRole, status)
-            top.setData(0, QtCore.Qt.UserRole, version)
-            top.setData(2, QtCore.Qt.UserRole, self._appliance)
+            top.setData(1, QtCore.Qt.ItemDataRole.DisplayRole, human_filesize(size))
+            top.setData(2, QtCore.Qt.ItemDataRole.DisplayRole, status)
+            top.setData(0, QtCore.Qt.ItemDataRole.UserRole, version)
+            top.setData(2, QtCore.Qt.ItemDataRole.UserRole, self._appliance)
             self.uiApplianceVersionTreeWidget.addTopLevelItem(top)
             if expand:
                 top.setExpanded(True)
@@ -459,7 +459,7 @@ Usage: {}
         if current is None or sip.isdeleted(current):
             return
 
-        image = current.data(1, QtCore.Qt.UserRole)
+        image = current.data(1, QtCore.Qt.ItemDataRole.UserRole)
         if image is not None:
             if "direct_download_url" in image or "download_url" in image:
                 self.uiDownloadPushButton.show()
@@ -480,7 +480,7 @@ Usage: {}
         if current is None or sip.isdeleted(current):
             return
 
-        data = current.data(1, QtCore.Qt.UserRole)
+        data = current.data(1, QtCore.Qt.ItemDataRole.UserRole)
         if data is not None:
             if "direct_download_url" in data:
                 QtGui.QDesktopServices.openUrl(QtCore.QUrl(data["direct_download_url"]))
@@ -500,16 +500,16 @@ Usage: {}
         if current is None:
             QtWidgets.QMessageBox.critical(self.parent(), "Base version", "Please select a base version")
             return
-        base_version = current.data(0, QtCore.Qt.UserRole)
+        base_version = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
 
-        new_version_name, ok = QtWidgets.QInputDialog.getText(self, "Creating a new version", "Create a new version for this appliance.\nPlease share your experience on the GNS3 community if this version works.\n\nVersion name:", QtWidgets.QLineEdit.Normal, base_version.get("name"))
+        new_version_name, ok = QtWidgets.QInputDialog.getText(self, "Creating a new version", "Create a new version for this appliance.\nPlease share your experience on the GNS3 community if this version works.\n\nVersion name:", QtWidgets.QLineEdit.EchoMode.Normal, base_version.get("name"))
         if ok:
             new_version = {"name": new_version_name}
             new_version["images"] = {}
 
             for disk_type in base_version["images"]:
                 base_filename = base_version["images"][disk_type]["filename"]
-                filename, ok = QtWidgets.QInputDialog.getText(self, "Image", "Disk image filename for {}".format(disk_type), QtWidgets.QLineEdit.Normal, base_filename)
+                filename, ok = QtWidgets.QInputDialog.getText(self, "Image", "Disk image filename for {}".format(disk_type), QtWidgets.QLineEdit.EchoMode.Normal, base_filename)
                 if not ok:
                     filename = base_filename
                 new_version["images"][disk_type] = {"filename": filename, "version": new_version_name}
@@ -534,7 +534,7 @@ Usage: {}
         current = self.uiApplianceVersionTreeWidget.currentItem()
         if not current:
             return
-        disk = current.data(1, QtCore.Qt.UserRole)
+        disk = current.data(1, QtCore.Qt.ItemDataRole.UserRole)
 
         path, _ = QtWidgets.QFileDialog.getOpenFileName()
         if len(path) == 0:
@@ -554,9 +554,9 @@ Usage: {}
                     f"actual:\t{image.filesize} bytes\n"
                     f"expected:\t{disk['filesize']} bytes\n\n"
                     "Do you want to accept it at your own risks?",
-                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
                 )
-                if reply == QtWidgets.QMessageBox.No:
+                if reply == QtWidgets.QMessageBox.StandardButton.No:
                     return
         except OSError as e:
             QtWidgets.QMessageBox.warning(self.parent(), "Add appliance", "Can't access to the image file {}: {}.".format(path, str(e)))
@@ -589,7 +589,7 @@ Usage: {}
                     qemu_platform = self._appliance.template_properties()["platform"]
                 else:
                     qemu_platform = self._appliance.template_properties()["arch"]
-                i = self.uiQemuListComboBox.findData(qemu_platform, flags=QtCore.Qt.MatchEndsWith)
+                i = self.uiQemuListComboBox.findData(qemu_platform, flags=QtCore.Qt.MatchFlag.MatchEndsWith)
                 if i != -1:
                     self.uiQemuListComboBox.setCurrentIndex(i)
 
@@ -615,7 +615,7 @@ Usage: {}
         template_manager = TemplateManager().instance()
         while len(appliance_configuration["name"]) == 0 or not template_manager.is_name_available(appliance_configuration["name"]):
             QtWidgets.QMessageBox.warning(self.parent(), "Add template", "The name \"{}\" is already used by another template".format(appliance_configuration["name"]))
-            appliance_configuration["name"], ok = QtWidgets.QInputDialog.getText(self.parent(), "Add template", "New name:", QtWidgets.QLineEdit.Normal, appliance_configuration["name"])
+            appliance_configuration["name"], ok = QtWidgets.QInputDialog.getText(self.parent(), "Add template", "New name:", QtWidgets.QLineEdit.EchoMode.Normal, appliance_configuration["name"])
             if not ok:
                 return False
             appliance_configuration["name"] = appliance_configuration["name"].strip()
@@ -635,7 +635,7 @@ Usage: {}
         #worker = WaitForLambdaWorker(lambda: self._create_template(appliance_configuration, self._compute_id), allowed_exceptions=[ConfigException, OSError])
         #progress_dialog = ProgressDialog(worker, "Add template", "Installing a new template...", None, busy=True, parent=self)
         #progress_dialog.show()
-        #if progress_dialog.exec_():
+        #if progress_dialog.exec():
         #    QtWidgets.QMessageBox.information(self.parent(), "Add template", "{} template has been installed!".format(appliance_configuration["name"]))
         #    return True
         #return False
@@ -643,7 +643,7 @@ Usage: {}
         # worker = WaitForLambdaWorker(lambda: config.save(), allowed_exceptions=[ConfigException, OSError])
         # progress_dialog = ProgressDialog(worker, "Add appliance", "Install the appliance...", None, busy=True, parent=self)
         # progress_dialog.show()
-        # if progress_dialog.exec_():
+        # if progress_dialog.exec():
         #     QtWidgets.QMessageBox.information(self.parent(), "Add appliance", "{} installed!".format(appliance_configuration["name"]))
         #     return True
 
@@ -714,18 +714,18 @@ Usage: {}
             current = self.uiApplianceVersionTreeWidget.currentItem()
             if current is None or sip.isdeleted(current):
                 return False
-            version = current.data(0, QtCore.Qt.UserRole)
+            version = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
             if version is None:
                 return False
-            appliance = current.data(2, QtCore.Qt.UserRole)
+            appliance = current.data(2, QtCore.Qt.ItemDataRole.UserRole)
             try:
                 self._appliance.search_images_for_version(version["name"])
             except ApplianceError as e:
                 QtWidgets.QMessageBox.critical(self, "Appliance", "Cannot install {} version {}: {}".format(appliance["name"], version["name"], e))
                 return False
             reply = QtWidgets.QMessageBox.question(self, "Appliance", "Would you like to install {} version {}?".format(appliance["name"], version["name"]),
-                                                   QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-            if reply == QtWidgets.QMessageBox.No:
+                                                   QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+            if reply == QtWidgets.QMessageBox.StandardButton.No:
                 return False
 
             self._uploadImages(appliance["name"], version["name"])
@@ -740,7 +740,7 @@ Usage: {}
                 return False
             current = self.uiApplianceVersionTreeWidget.currentItem()
             if current:
-                version = current.data(0, QtCore.Qt.UserRole)
+                version = current.data(0, QtCore.Qt.ItemDataRole.UserRole)
                 return self._install(version["name"])
             else:
                 return self._install(None)
@@ -759,8 +759,8 @@ Usage: {}
                 if ComputeManager.instance().localPlatform():
                     if (ComputeManager.instance().localPlatform().startswith("darwin") or ComputeManager.instance().localPlatform().startswith("win")):
                         if "qemu" in self._appliance:
-                            reply = QtWidgets.QMessageBox.question(self, "Appliance", "Qemu on Windows and macOS is not supported by the GNS3 team. Do you want to continue?", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-                            if reply == QtWidgets.QMessageBox.No:
+                            reply = QtWidgets.QMessageBox.question(self, "Appliance", "Qemu on Windows and macOS is not supported by the GNS3 team. Do you want to continue?", QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+                            if reply == QtWidgets.QMessageBox.StandardButton.No:
                                 return False
                 self._compute_id = "local"
 
@@ -821,8 +821,8 @@ Usage: {}
             reply = QtWidgets.QMessageBox.question(self, "Custom files",
                 "This option allows files with different MD5 checksums. This feature is only for advanced users and can lead "
                 "to unexpected problems. Do you want to proceed?",
-                QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+                QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
 
-            if reply == QtWidgets.QMessageBox.No:
+            if reply == QtWidgets.QMessageBox.StandardButton.No:
                 self.allowCustomFiles.setChecked(False)
                 return False

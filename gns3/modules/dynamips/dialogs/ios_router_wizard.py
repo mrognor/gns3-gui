@@ -65,7 +65,7 @@ class IOSRouterWizard(VMWithImagesWizard, Ui_IOSRouterWizard):
     def __init__(self, ios_routers, parent):
 
         super().__init__(ios_routers, parent)
-        self.setPixmap(QtWidgets.QWizard.LogoPixmap, QtGui.QPixmap(":/symbols/router.svg"))
+        self.setPixmap(QtWidgets.QWizard.WizardPixmap.LogoPixmap, QtGui.QPixmap(":/symbols/router.svg"))
 
         self.uiTestIOSImagePushButton.clicked.connect(self._testIOSImageSlot)
         self.uiIdlePCFinderPushButton.clicked.connect(self._idlePCFinderSlot)
@@ -200,10 +200,10 @@ class IOSRouterWizard(VMWithImagesWizard, Ui_IOSRouterWizard):
         validator = self.uiIdlepcLineEdit.validator()
         text_input = self.uiIdlepcLineEdit.text()
         state = validator.validate(text_input, len(text_input))[0]
-        if state == QtGui.QValidator.Acceptable:
+        if state == QtGui.QValidator.State.Acceptable:
             color = '#A2C964'  # green
             self._idle_valid = True
-        elif state == QtGui.QValidator.Intermediate:
+        elif state == QtGui.QValidator.State.Intermediate:
             color = '#fff79a'  # yellow
             self._idle_valid = False
         else:

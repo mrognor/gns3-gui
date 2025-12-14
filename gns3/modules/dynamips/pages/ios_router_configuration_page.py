@@ -87,10 +87,10 @@ class IOSRouterConfigurationPage(QtWidgets.QWidget, Ui_iosRouterConfigPageWidget
 
         validator = self.uiIdlepcLineEdit.validator()
         state = validator.validate(self.uiIdlepcLineEdit.text(), 0)[0]
-        if state == QtGui.QValidator.Acceptable:
+        if state == QtGui.QValidator.State.Acceptable:
             color = '#A2C964'  # green
             self._idle_valid = True
-        elif state == QtGui.QValidator.Intermediate:
+        elif state == QtGui.QValidator.State.Intermediate:
             color = '#fff79a'  # yellow
             self._idle_valid = False
         else:
@@ -177,7 +177,7 @@ class IOSRouterConfigurationPage(QtWidgets.QWidget, Ui_iosRouterConfigPageWidget
         symbol_path = self.uiSymbolLineEdit.text()
         dialog = SymbolSelectionDialog(self, symbol=symbol_path)
         dialog.show()
-        if dialog.exec_():
+        if dialog.exec():
             new_symbol_path = dialog.getSymbol()
             self.uiSymbolLineEdit.setText(new_symbol_path)
             self.uiSymbolLineEdit.setToolTip('<img src="{}"/>'.format(new_symbol_path))

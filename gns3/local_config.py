@@ -190,7 +190,7 @@ class LocalConfig(QtCore.QObject):
                 QtWidgets.QMessageBox.critical(False, "Version error", error_message)
                 # Exit immediately not clean but we want to avoid any side effect that could corrupt the file
                 QtCore.QTimer.singleShot(0, app.quit)
-                app.exec_()
+                app.exec()
                 sys.exit(1)
 
         if "version" not in self._settings or parse_version(self._settings["version"]) < parse_version("1.4.0alpha1"):

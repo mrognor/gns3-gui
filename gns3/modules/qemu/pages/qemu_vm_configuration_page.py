@@ -140,7 +140,7 @@ class QemuVMConfigurationPage(QtWidgets.QWidget, Ui_QemuVMConfigPageWidget):
         symbol_path = self.uiSymbolLineEdit.text()
         dialog = SymbolSelectionDialog(self, symbol=symbol_path)
         dialog.show()
-        if dialog.exec_():
+        if dialog.exec():
             new_symbol_path = dialog.getSymbol()
             self.uiSymbolLineEdit.setText(new_symbol_path)
             self.uiSymbolLineEdit.setToolTip('<img src="{}"/>'.format(new_symbol_path))
@@ -246,22 +246,22 @@ class QemuVMConfigurationPage(QtWidgets.QWidget, Ui_QemuVMConfigPageWidget):
 
     def _hdaDiskImageCreateSlot(self):
         create_dialog = QemuImageWizard(self, self._compute_id, self.uiNameLineEdit.text() + '-hda')
-        if QtWidgets.QDialog.Accepted == create_dialog.exec_():
+        if QtWidgets.QDialog.DialogCode.Accepted == create_dialog.exec():
             self.uiHdaDiskImageLineEdit.setText(create_dialog.uiLocationLineEdit.text())
 
     def _hdbDiskImageCreateSlot(self):
         create_dialog = QemuImageWizard(self, self._compute_id, self.uiNameLineEdit.text() + '-hdb')
-        if QtWidgets.QDialog.Accepted == create_dialog.exec_():
+        if QtWidgets.QDialog.DialogCode.Accepted == create_dialog.exec():
             self.uiHdbDiskImageLineEdit.setText(create_dialog.uiLocationLineEdit.text())
 
     def _hdcDiskImageCreateSlot(self):
         create_dialog = QemuImageWizard(self, self._compute_id, self.uiNameLineEdit.text() + '-hdc')
-        if QtWidgets.QDialog.Accepted == create_dialog.exec_():
+        if QtWidgets.QDialog.DialogCode.Accepted == create_dialog.exec():
             self.uiHdcDiskImageLineEdit.setText(create_dialog.uiLocationLineEdit.text())
 
     def _hddDiskImageCreateSlot(self):
         create_dialog = QemuImageWizard(self, self._compute_id, self.uiNameLineEdit.text() + '-hdd')
-        if QtWidgets.QDialog.Accepted == create_dialog.exec_():
+        if QtWidgets.QDialog.DialogCode.Accepted == create_dialog.exec():
             self.uiHddDiskImageLineEdit.setText(create_dialog.uiLocationLineEdit.text())
 
     def _resizeDiskImageCallback(self, result, error=False, **kwargs):
@@ -345,7 +345,7 @@ class QemuVMConfigurationPage(QtWidgets.QWidget, Ui_QemuVMConfigPageWidget):
         if index != -1:
             self.uiQemuListComboBox.setCurrentIndex(index)
         else:
-            index = self.uiQemuListComboBox.findData("{path}".format(path=os.path.basename(qemu_path)), flags=QtCore.Qt.MatchEndsWith)
+            index = self.uiQemuListComboBox.findData("{path}".format(path=os.path.basename(qemu_path)), flags=QtCore.Qt.MatchFlag.MatchEndsWith)
             self.uiQemuListComboBox.setCurrentIndex(index)
             if index == -1:
                 QtWidgets.QMessageBox.warning(self, "Qemu","Could not find '{}' in the Qemu binaries list, please select a new binary".format(qemu_path))
@@ -432,7 +432,7 @@ class QemuVMConfigurationPage(QtWidgets.QWidget, Ui_QemuVMConfigPageWidget):
 
         dialog = CustomAdaptersConfigurationDialog(ports, self._custom_adapters, default_adapter, network_devices, base_mac_address, parent=self)
         dialog.show()
-        dialog.exec_()
+        dialog.exec()
 
     def loadSettings(self, settings, node=None, group=False):
         """
@@ -574,7 +574,7 @@ class QemuVMConfigurationPage(QtWidgets.QWidget, Ui_QemuVMConfigPageWidget):
         else:
             self.uiActivateCPUThrottlingCheckBox.setChecked(False)
 
-        index = self.uiProcessPriorityComboBox.findText(settings["process_priority"], QtCore.Qt.MatchFixedString)
+        index = self.uiProcessPriorityComboBox.findText(settings["process_priority"], QtCore.Qt.MatchFlag.MatchFixedString)
         if index != -1:
             self.uiProcessPriorityComboBox.setCurrentIndex(index)
         self.uiQemuOptionsLineEdit.setText(settings["options"])

@@ -206,7 +206,7 @@ def main():
 
     # always use the INI format on Windows and OSX (because we don't like the registry and plist files)
     if sys.platform.startswith('win') or sys.platform.startswith('darwin'):
-        QtCore.QSettings.setDefaultFormat(QtCore.QSettings.IniFormat)
+        QtCore.QSettings.setDefaultFormat(QtCore.QSettings.Format.IniFormat)
 
     if sys.platform.startswith('win') and hasattr(sys, "frozen"):
         try:
@@ -239,7 +239,7 @@ def main():
     if local_config.multiProfiles() and not options.profile:
         profile_select = ProfileSelectDialog()
         profile_select.show()
-        if profile_select.exec_():
+        if profile_select.exec():
             options.profile = profile_select.profile()
         else:
             sys.exit(0)
@@ -277,7 +277,7 @@ def main():
             error_message = "GNS3.app must be moved to the '/Applications' folder before it can be used"
             QtWidgets.QMessageBox.critical(False, "Loading error", error_message)
             QtCore.QTimer.singleShot(0, app.quit)
-            app.exec_()
+            app.exec()
             sys.exit(1)
 
     global mainwindow
@@ -300,7 +300,7 @@ def main():
 
     mainwindow.show()
 
-    exit_code = app.exec_()
+    exit_code = app.exec()
     signal.signal(signal.SIGINT, orig_sigint)
     signal.signal(signal.SIGTERM, orig_sigterm)
 
