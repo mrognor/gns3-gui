@@ -540,7 +540,7 @@ class GraphicsView(QtWidgets.QGraphicsView):
             if item and not sip.isdeleted(item):
                 # Prevent right clicking on a selected item from de-selecting all other items
                 if not item.isSelected():
-                    if not event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
+                    if not (event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier):
                         for it in self.scene().items():
                             it.setSelected(False)
                     item.setSelected(True)
@@ -566,12 +566,12 @@ class GraphicsView(QtWidgets.QGraphicsView):
 
         # If the left  mouse button is not still pressed TOGETHER with the SHIFT key and neither is the middle button
         # this means the user is no longer trying to drag the view
-        if self._dragging and not (event.buttons() == QtCore.Qt.MouseButton.LeftButton and event.modifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier) and not event.buttons() & QtCore.Qt.MouseButton.MiddleButton:
+        if self._dragging and not (event.buttons() == QtCore.Qt.MouseButton.LeftButton and event.modifiers() == QtCore.Qt.KeyboardModifier.ShiftModifier) and not (event.buttons() & QtCore.Qt.MouseButton.MiddleButton):
             self._dragging = False
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
         else:
             item = self.itemAt(event.position().toPoint())
-            if item is not None and not event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
+            if item is not None and not (event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier):
                 item.setSelected(True)
             super().mouseReleaseEvent(event)
 
@@ -1648,15 +1648,15 @@ class GraphicsView(QtWidgets.QGraphicsView):
     def createDrawingItem(self, type, x, y, z, locked=False, rotation=0, svg=None, drawing_id=None):
 
         if type == "ellipse":
-            item = EllipseItem(pos=QtCore.QPoint(x, y), z=z, locked=locked, rotation=rotation, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
+            item = EllipseItem(pos=QtCore.QPointF(x, y), z=z, locked=locked, rotation=rotation, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
         elif type == "rect":
-            item = RectangleItem(pos=QtCore.QPoint(x, y), z=z, locked=locked, rotation=rotation, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
+            item = RectangleItem(pos=QtCore.QPointF(x, y), z=z, locked=locked, rotation=rotation, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
         elif type == "line":
-            item = LineItem(pos=QtCore.QPoint(x, y), dst=QtCore.QPoint(200, 0), z=z, locked=locked, rotation=rotation, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
+            item = LineItem(pos=QtCore.QPointF(x, y), dst=QtCore.QPoint(200, 0), z=z, locked=locked, rotation=rotation, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
         elif type == "image":
-            item = ImageItem(pos=QtCore.QPoint(x, y), z=z, rotation=rotation, locked=locked, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
+            item = ImageItem(pos=QtCore.QPointF(x, y), z=z, rotation=rotation, locked=locked, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
         elif type == "text":
-            item = TextItem(pos=QtCore.QPoint(x, y), z=z, rotation=rotation, locked=locked, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
+            item = TextItem(pos=QtCore.QPointF(x, y), z=z, rotation=rotation, locked=locked, project=self._topology.project(), drawing_id=drawing_id, svg=svg)
 
         if drawing_id is None:
             item.create()

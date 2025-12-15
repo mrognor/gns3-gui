@@ -91,25 +91,56 @@ class QFileDialog(OldFileDialog):
         return path
 
     @staticmethod
-    def getOpenFileName(parent=None, caption='', directory='', filter='', selectedFilter='', options=OldFileDialog.options):
-        path, _ = OldFileDialog.getOpenFileName(parent, caption, directory, filter, selectedFilter, options)
+    def getOpenFileName(parent=None, caption='', directory='', filter='', initialFilter='', options=None):
+
+        if options is None:
+            options = OldFileDialog.Option(0)
+        path, selected_filter = OldFileDialog.getOpenFileName(
+            parent=parent,
+            caption=caption,
+            directory=directory,
+            filter=filter,
+            initialFilter=initialFilter,
+            options=options
+        )
         if path:
             path = os.path.normpath(path)
-        return path, _
+        return path, selected_filter
+
 
     @staticmethod
-    def getOpenFileNames(parent=None, caption='', directory='', filter='', selectedFilter='', options=OldFileDialog.options):
-        path, _ = OldFileDialog.getOpenFileNames(parent, caption, directory, filter, selectedFilter, options)
-        if path:
-            path = os.path.normpath(path)
-        return path, _
+    def getOpenFileNames(parent=None, caption='', directory='', filter='', initialFilter='', options=None):
+
+        if options is None:
+            options = OldFileDialog.Option(0)
+        paths, selected_filter = OldFileDialog.getOpenFileNames(
+            parent=parent,
+            caption=caption,
+            directory=directory,
+            filter=filter,
+            initialFilter=initialFilter,
+            options=options
+        )
+        paths = [os.path.normpath(path) for path in paths]
+        return paths, selected_filter
 
     @staticmethod
-    def getSaveFileName(parent=None, caption='', directory='', filter='', selectedFilter='', options=OldFileDialog.options):
-        path, _ = OldFileDialog.getSaveFileName(parent, caption, directory, filter, selectedFilter, options)
+    def getSaveFileName(parent=None, caption='', directory='', filter='', initialFilter='', options=None):
+
+        if options is None:
+            options = OldFileDialog.Option(0)
+        path, selected_filter = OldFileDialog.getSaveFileName(
+            parent=parent,
+            caption=caption,
+            directory=directory,
+            filter=filter,
+            initialFilter=initialFilter,
+            options=options
+        )
         if path:
             path = os.path.normpath(path)
-        return path, _
+        return path, selected_filter
+
 
 QtWidgets.QFileDialog = QFileDialog
 

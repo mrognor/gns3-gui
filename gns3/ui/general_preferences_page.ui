@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>512</width>
+    <width>556</width>
     <height>652</height>
    </rect>
   </property>
@@ -1017,13 +1017,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="uiHdpiCheckBox">
-         <property name="text">
-          <string>Enable HDPI mode (this may crash on Linux, restart required)</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QCheckBox" name="uiMultiProfilesCheckBox">
          <property name="text">
           <string>Request for profile settings at application startup</string>
@@ -1126,7 +1119,6 @@
   <tabstop>uiCrashReportCheckBox</tabstop>
   <tabstop>uiOverlayNotificationsCheckBox</tabstop>
   <tabstop>uiExperimentalFeaturesCheckBox</tabstop>
-  <tabstop>uiHdpiCheckBox</tabstop>
   <tabstop>uiMultiProfilesCheckBox</tabstop>
   <tabstop>uiDirectFileUpload</tabstop>
   <tabstop>uiRestoreDefaultsPushButton</tabstop>

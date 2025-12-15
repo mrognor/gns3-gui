@@ -19,7 +19,7 @@
 Dialog to load module and built-in preference pages.
 """
 
-from ..qt import QtCore, QtWidgets
+from ..qt import QtGui, QtCore, QtWidgets
 from ..ui.preferences_dialog_ui import Ui_PreferencesDialog
 from ..pages.server_preferences_page import ServerPreferencesPage
 from ..pages.general_preferences_page import GeneralPreferencesPage
@@ -49,8 +49,9 @@ class PreferencesDialog(QtWidgets.QDialog, Ui_PreferencesDialog):
         # We adapt the max size to the screen resolution
         # We need to manually do that otherwise on small screen the windows
         # could be bigger than the screen instead of displaying scrollbars
-        height = QtWidgets.QDesktopWidget().screenGeometry().height() - 100
-        width = QtWidgets.QDesktopWidget().screenGeometry().width() - 100
+        geometry = QtGui.QGuiApplication.primaryScreen().geometry()
+        height = geometry.height() - 100
+        width = geometry.width() - 100
 
         # 980 is the default width
         if self.width() > width:
@@ -73,7 +74,7 @@ class PreferencesDialog(QtWidgets.QDialog, Ui_PreferencesDialog):
         # set the maximum width based on the content of column 0
         self.uiTreeWidget.setMaximumWidth(self.uiTreeWidget.sizeHintForColumn(0) + 10)
 
-        # Something has change?
+        # Something has changed?
         self._modified_pages = set()
 
     def _loadPreferencePages(self):

@@ -305,7 +305,6 @@ class GeneralPreferencesPage(QtWidgets.QWidget, Ui_GeneralPreferencesPageWidget)
         self.uiCrashReportCheckBox.setChecked(local_server["report_errors"])
         self.uiCheckForUpdateCheckBox.setChecked(settings["check_for_update"])
         self.uiExperimentalFeaturesCheckBox.setChecked(settings["experimental_features"])
-        self.uiHdpiCheckBox.setChecked(settings["hdpi"])
         self.uiTelnetConsoleCommandLineEdit.setText(settings["telnet_console_command"])
         self.uiTelnetConsoleCommandLineEdit.setCursorPosition(0)
 
@@ -403,7 +402,6 @@ class GeneralPreferencesPage(QtWidgets.QWidget, Ui_GeneralPreferencesPageWidget)
             "style": self.uiStyleComboBox.currentText(),
             "symbol_theme": self.uiSymbolThemeComboBox.currentText(),
             "experimental_features": self.uiExperimentalFeaturesCheckBox.isChecked(),
-            "hdpi": self.uiHdpiCheckBox.isChecked(),
             "check_for_update": self.uiCheckForUpdateCheckBox.isChecked(),
             "overlay_notifications": self.uiOverlayNotificationsCheckBox.isChecked(),
             "telnet_console_command": self.uiTelnetConsoleCommandLineEdit.text(),

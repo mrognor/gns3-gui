@@ -61,7 +61,7 @@ class ShapeItem(DrawingItem):
         """
 
         self.update()
-        self._originally_movable = self.flags() & QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable
+        self._originally_movable = bool(self.flags() & QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
         if event.pos().x() > (self.rect().right() - self._border):
             self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, False)
             self._edge = "right"

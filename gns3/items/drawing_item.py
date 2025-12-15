@@ -108,7 +108,7 @@ class DrawingItem:
         if error:
             log.error("Error while updating drawing: {}".format(result["message"]))
             return False
-        self.setPos(QtCore.QPoint(result["x"], result["y"]))
+        self.setPos(QtCore.QPointF(result["x"], result["y"]))
         self.setZValue(result["z"])
         self.setLocked(result["locked"])
         self.setRotation(result["rotation"])

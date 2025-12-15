@@ -234,7 +234,7 @@ def main():
     local_config = LocalConfig.instance()
 
     global app
-    app = Application(sys.argv, hdpi=local_config.hdpi())
+    app = Application(sys.argv)
 
     if local_config.multiProfiles() and not options.profile:
         profile_select = ProfileSelectDialog()

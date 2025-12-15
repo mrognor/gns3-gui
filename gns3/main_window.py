@@ -1137,7 +1137,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.uiAddLinkAction.isChecked() and key == QtCore.Qt.Key.Key_Escape:
             self.uiAddLinkAction.setChecked(False)
             self._addLinkActionSlot()
-        elif key == QtCore.Qt.Key.Key_C and event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
+        elif key == QtCore.Qt.Key.Key_C and (event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier):
             status_bar_message = self.uiStatusBar.currentMessage()
             if status_bar_message:
                 QtWidgets.QApplication.clipboard().setText(status_bar_message)
