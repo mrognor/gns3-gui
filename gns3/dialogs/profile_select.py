@@ -103,4 +103,4 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     dialog = ProfileSelectDialog()
     dialog.show()
-    exit_code = app.exec_()
+    exit_code = app.exec()

@@ -190,7 +190,7 @@ class LocalConfig(QtCore.QObject):
                 QtWidgets.QMessageBox.critical(False, "Version error", error_message)
                 # Exit immediately not clean but we want to avoid any side effect that could corrupt the file
                 QtCore.QTimer.singleShot(0, app.quit)
-                app.exec_()
+                app.exec()
                 sys.exit(1)
 
         if "version" not in self._settings or parse_version(self._settings["version"]) < parse_version("1.4.0alpha1"):
@@ -393,14 +393,6 @@ class LocalConfig(QtCore.QObject):
 
         from gns3.settings import GENERAL_SETTINGS
         return self.loadSectionSettings("MainWindow", GENERAL_SETTINGS)["experimental_features"]
-
-    def hdpi(self):
-        """
-        :returns: Boolean. True if hdpi is allowed
-        """
-
-        from gns3.settings import GENERAL_SETTINGS
-        return self.loadSectionSettings("MainWindow", GENERAL_SETTINGS)["hdpi"]
 
     def multiProfiles(self):
         """

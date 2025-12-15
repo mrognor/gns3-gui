@@ -153,13 +153,13 @@ class Controller(QtCore.QObject):
                 self.connection_failed_signal.emit()
                 if self._display_error:
                     self._error_dialog = QtWidgets.QMessageBox(self.parent())
-                    self._error_dialog.setWindowModality(QtCore.Qt.ApplicationModal)
+                    self._error_dialog.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
                     self._error_dialog.setWindowTitle("Connection to server")
                     if result and "message" in result:
                         self._error_dialog.setText("Error when connecting to the GNS3 server:\n{}".format(result["message"]))
                     else:
                         self._error_dialog.setText("Cannot connect to the GNS3 server")
-                    self._error_dialog.setIcon(QtWidgets.QMessageBox.Critical)
+                    self._error_dialog.setIcon(QtWidgets.QMessageBox.Icon.Critical)
                     self._error_dialog.show()
             # Try to connect again in 5 seconds
             QtCore.QTimer.singleShot(5000, qpartial(self.get, '/version', self._versionGetSlot, showProgress=self._first_error))
