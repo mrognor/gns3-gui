@@ -17,7 +17,7 @@ parser.add_argument("--resources", help="force rebuild resources", action="store
 args = parser.parse_args()
 
 PYUIC = shutil.which("pyuic6")
-PYRCC = shutil.which("pyside6-rcc")  # Using PySide6's rcc as PyQt6's pyrcc6 does not exist
+PYRCC = shutil.which("pyrcc5")  # Using PyQt5's rcc as PyQt6's pyrcc6 does not exist
 
 
 def build_ui(path):
@@ -45,17 +45,17 @@ def build_resources(path, target):
         if source.endswith(".qrc"):
             target = os.path.join(target, file.replace(".qrc", "_rc.py"))
             if not os.access(target, os.F_OK) or (os.stat(source)[stat.ST_MTIME] > os.stat(target)[stat.ST_MTIME]) or args.force or args.resources:
-                command = [PYRCC, "-o", target, source]
+                command = [PYRCC, "-compress", "9", "-o", target, source]
                 print("Building resources {}".format(source))
                 if args.force and os.access(target, os.F_OK):
                     os.remove(target)
                 subprocess.call(command)
 
-                # patch the .py resource file to replace PySide6 by PyQt6 (as we used pyside6-rcc)
+                # patch the .py resource file to replace PyQt5 by PyQt6
                 print("Patching resources {}".format(target))
                 with open(target, "r") as f:
                     content = f.read()
-                content = content.replace("PySide6", "PyQt6")
+                content = content.replace("PyQt5", "PyQt6")
                 with open(target, "w") as f:
                     f.write(content)
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         raise SystemExit("This script can only be run on Linux.")
 
     if not PYUIC or not PYRCC:
-        raise SystemExit("pyuic6 or pyside6-rcc couldn't be found, please install PyQt6 development tools (e.g. pyqt6-dev-tools) and PySide6")
+        raise SystemExit("pyuic6 or pyrcc5 couldn't be found, please install PyQt5 and PyQt6 development tools (e.g. pyqt5-dev-tools)")
 
     cwd = os.path.dirname(os.path.abspath(__file__))
     gns3_path = os.path.abspath(os.path.join(cwd, "../gns3/"))
