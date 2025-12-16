@@ -72,9 +72,6 @@ class UpdateManager(QtCore.QObject):
         request = QtNetwork.QNetworkRequest(QtCore.QUrl(url))
         request.setRawHeader(b'User-Agent', b'GNS3 Check For Update')
         request.setAttribute(QtNetwork.QNetworkRequest.Attribute.User, user_attribute)
-        if parse_version(QtCore.QT_VERSION_STR) >= parse_version("5.6.0") and parse_version(QtCore.PYQT_VERSION_STR) >= parse_version("5.6.0"):
-            # follow redirects only supported starting with Qt 5.6.0
-            request.setAttribute(QtNetwork.QNetworkRequest.FollowRedirectsAttribute, True)
         reply = self._network_manager.get(request)
         reply.finished.connect(finished_slot)
         log.debug('Download %s', url)
