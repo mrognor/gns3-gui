@@ -195,7 +195,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setWindowTitle("[*] GNS3")
 
         # load initial stuff once the event loop isn't busy
-        self.run_later(0, self.startupLoading)
+        # self.run_later(0, self.startupLoading)
 
     def _connections(self):
         """
