@@ -158,7 +158,7 @@ class NodesView(QtWidgets.QTreeWidget):
         :param event: QMouseEvent instance
         """
 
-        item = self.itemAt(event.position())
+        item = self.itemAt(event.pos())
         if item:
             template = TemplateManager.instance().getTemplate(item.data(0, QtCore.Qt.ItemDataRole.UserRole))
             if template:
