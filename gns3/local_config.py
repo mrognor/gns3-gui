@@ -92,11 +92,13 @@ class LocalConfig(QtCore.QObject):
 
                 if sys.platform.startswith("win"):
                     old_config_path = os.path.join(os.path.expandvars("%APPDATA%"), "GNS3", filename)
-                elif os.path.expandvars("$XDG_CONFIG_HOME"):
-                    xdg_config = os.path.expandvars("$XDG_CONFIG_HOME")
-                    old_config_path = os.path.join(xdg_config, "GNS3", filename)
                 else:
-                    old_config_path = os.path.join(os.path.expanduser("~"), ".config", "GNS3", filename)
+                    xgd_config_var = "$XDG_CONFIG_HOME"
+                    xdg_config_res = os.path.expandvars(xgd_config_var)
+                    if xdg_config_res  != xgd_config_var:
+                        old_config_path = os.path.join(xdg_config_res, "GNS3", filename)
+                    else:
+                        old_config_path = os.path.join(os.path.expanduser("~"), ".config", "GNS3", filename)
 
                 # TODO: migrate versioned config file from a previous version of GNS3 (for instance 2.2 -> 2.3) + support profiles
                 if os.path.exists(old_config_path):
@@ -145,12 +147,14 @@ class LocalConfig(QtCore.QObject):
         if sys.platform.startswith("win"):
             appdata = os.path.expandvars("%APPDATA%")
             path = os.path.join(appdata, "GNS3", version)
-        elif os.path.expandvars("$XDG_CONFIG_HOME"):
-            xdg_config = os.path.expandvars("$XDG_CONFIG_HOME")
-            path = os.path.join(xdg_config, "GNS3", version)
         else:
-            home = os.path.expanduser("~")
-            path = os.path.join(home, ".config", "GNS3", version)
+            xgd_config_var = "$XDG_CONFIG_HOME"
+            xdg_config_res = os.path.expandvars(xgd_config_var)
+            if xdg_config_res != xgd_config_var:
+                path = os.path.join(xdg_config_res, "GNS3", version)
+            else:
+                home = os.path.expanduser("~")
+                path = os.path.join(home, ".config", "GNS3", version)
 
         if self._profile is not None:
             path = os.path.join(path, "profiles", self._profile)
