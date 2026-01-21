@@ -50,7 +50,7 @@ class CrashReport:
     Report crash to a third party service
     """
 
-    DSN = "https://4787643437b9cd21a738c97fe5595c2b@o19455.ingest.us.sentry.io/38506"
+    DSN = "https://f09d966530e45cc56fbe33adc6baeeb8@o19455.ingest.us.sentry.io/38506"
     _instance = None
 
     def __init__(self):
