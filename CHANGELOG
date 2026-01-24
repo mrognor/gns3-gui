@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.2.56 21/01/2026
+
+* Fixing tab name in MobaXterm
+* PyQt6 migration
+* Add XDG Config Home support
+
+## 2.2.55 19/11/2025
+
+* Fix SyntaxWarning: invalid escape sequence. Fixes #3760
+* Support for Python 3.14
+* Clicking the "console connect to all nodes" opens all consoles in name order with case-insensitively
+
 ## 2.2.54 21/04/2025
 
 * Replace "Docker hub" by "Docker repository" because it is possible to use different repositories

@@ -24,9 +24,9 @@ class ExportProjectWorker(QtCore.QObject):
     """
 
     # signals to update the progress dialog.
-    error = QtCore.pyqtSignal(str, bool)
-    finished = QtCore.pyqtSignal()
-    updated = QtCore.pyqtSignal(int)
+    error = QtCore.Signal(str, bool)
+    finished = QtCore.Signal()
+    updated = QtCore.Signal(int)
 
     def __init__(self, project, path, include_images, include_snapshots, reset_mac_addresses, keep_compute_ids, compression):
         super().__init__()
