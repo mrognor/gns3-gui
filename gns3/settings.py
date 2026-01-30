@@ -181,7 +181,7 @@ if sys.platform.startswith("win"):
     PRECONFIGURED_VNC_CONSOLE_COMMANDS = {
         'TightVNC (included with GNS3)': 'tvnviewer.exe {host}:{port}',
         'UltraVNC': r'"{}\uvnc bvba\UltraVNC\vncviewer.exe" {{host}}:{{port}}'.format(program_files)
-        'SuperPutty': r'SuperPutty.exe -vnc {host}:{port}',
+        'SuperPutty': r'SuperPutty.exe -vnc {host}::{port}',
     }
 
     # default Windows VNC console command
